@@ -1,0 +1,17 @@
+clear
+echo ---Incluir---
+echo Nome completo
+read nome
+echo Telefone fixo
+read phone
+echo Telefone celular
+read cellphone
+echo E-mail
+read email
+echo "Data de Nascimento (DD/MM/AAAA)"
+read datanasc
+
+echo Nome: $nome, Telefone fixo: $phone, Telefone celular: $cellphone, E-mail: $email, Nascimento: $datanasc >> dbAgenda.txt  
+clear
+echo Contato Salvo com Sucesso!!
+sleep 0.5

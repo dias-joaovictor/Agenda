@@ -1,0 +1,18 @@
+echo ---Excluir contato---
+echo
+echo
+echo Digite o nome completo do contato:
+read nome
+clear
+echo Contatos encontrados com o nome: $nome
+grep -i $nome dbAgenda.txt
+echo Deseja excluir esse contato?
+echo Digite 1 para sim ou qualquer outro para não
+read opt
+if [ $opt == 1 ];then
+grep -vi $nome dbAgenda.txt > dbAgenda.new
+rm dbAgenda.txt
+mv dbAgenda.new dbAgenda.txt
+chmod 741 dbAgena.txt
+fi
+

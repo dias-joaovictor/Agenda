@@ -1,0 +1,34 @@
+clear
+echo ---Ordenar---
+echo
+opt=0
+while [ $opt -ne 3 ]; do
+echo Escolha uma opção abaixo:
+echo 1- A-Z
+echo 2- Z-A
+echo 3- Voltar ao menu anterior
+read opt
+case $opt in 
+	1)
+		sort -n -t: -k1 dbAgenda.txt > dbAgenda.temp
+		rm -f dbAgenda.txt
+		mv dbAgenda.temp dbAgenda.txt
+		opt=3
+		;;
+
+		
+	2)
+		sort -nr -t: -k1 dbAgenda.txt > dbAgenda.temp
+		rm -f dbAgenda.txt
+		mv dbAgenda.temp dbAgenda.txt
+		opt=3
+		;;
+	3)	
+		
+		exit 0;;
+esac
+done
+clear
+echo Operação realizada com sucesso
+sleep 0.5
+clear

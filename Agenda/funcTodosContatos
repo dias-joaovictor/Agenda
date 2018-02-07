@@ -1,0 +1,13 @@
+clear
+echo ---Todos os Contatos---
+echo
+cat dbAgenda.txt > dbAgenda.temp
+chmod 444 dbAgenda.temp
+#cat dbAgenda.txt
+gnome-terminal -x bash -c "leafpad dbAgenda.temp; exec $SHELL"
+clear
+echo Digite qualquer tecla para voltar ao menu inicial
+read a
+rm -f dbAgenda.temp
+
+

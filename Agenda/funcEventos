@@ -1,0 +1,15 @@
+c=1
+while [ $c == 1 ]; do
+clear
+echo ---Buscador de Eventos---
+echo Digite um mês na forma de MM
+read data
+egrep */$data/* dbAgenda.txt > Eventos.temp
+gnome-terminal -x bash -c "leafpad Eventos.temp; exec $SHELL"
+clear
+echo Deseja realizar outra busca?
+echo Digite 1 para sim ou qualquer outra para não
+read c
+rm -f Eventos.temp
+done
+clear

@@ -1,0 +1,307 @@
+while true; do
+clear
+echo ---Agenda 1.0---
+echo 
+echo
+echo Escolha uma Opção
+echo 1- Ver contatos
+echo 2- Incluir contato
+echo 3- Ver eventos
+echo 4- Remover contato
+echo 5- Alterar contato
+echo 6- Quantidade de contatos
+echo 7- Ordenar contatos
+echo 8- Sair
+read opt
+case $opt in
+1) ./funcTodosContatos;;
+2) ./funcIncluir;;
+3) ./funcEventos;;
+4) ./funcExcluir;;
+5) ./funcAlterar;;
+6) ./funcQuantidade;;
+7) ./funcOrdenar;;
+8) exit 0;;
+esac
+
+done
+echo ---Alterar contato---
+echo
+echo
+control=0
+var=0
+count=0
+while [ $control -ne 5 ]; do
+	opt=0
+
+	#echo Digite o nome do usuário ou ¨9¨ para sair
+	#read nome
+	
+	if [ $count -eq 0 ]; then
+		echo Digite o nome completo ou ¨9¨ para sair
+		read nome
+	fi
+	if [ $count -eq 1 ]; then
+		clear
+		echo Nome não encontrado,
+		echo Digite um nome válido ou ¨9¨ para sair
+		read nome
+	fi
+	if [ $count -gt 1 ]; then
+		clear
+		echo Alteração realizada com sucesso!!
+		echo
+		echo deseja realizar outra outra alteração?
+		echo digite ¨9¨ para voltar ao menu anterior ou outro nome para ter seu cadastro alterado
+		read nome		
+	fi	 
+	if [ "$nome" == "9" ];then
+		opt=6
+		control=5
+		exit 0		
+	fi
+	#grep -i $nome dbAgenda.txt
+	grep -i $nome dbAgenda.txt > Temp
+	var=$(cat Temp)
+	if [ ¨$var¨ == ¨$(cat vazio)¨ ]; then
+		#echo nome nao encontrado // fazer aparecer
+		opt=6
+		count=1
+	fi	
+	clear
+	while [ $opt -ne 6 ]; do
+		grep -i $nome Temp
+		echo Qual informacao deseja alterar?
+		echo 1- Nome
+		echo 2- Telefone fixo
+		echo 3- Telefone celular
+		echo 4- E-mail
+		echo 5- Data de nascimento
+		echo 6- Retornar ao menu anterior
+		read opt
+		#clear
+		case $opt in
+			1)	echo ---Alterar Nome---
+				echo				
+				echo O dado a ser alterado é:
+				cut -d ',' -f 1 Temp | tee TempData			
+				echo Digite o novo nome:
+				read alt
+				alt=" Nome: $alt"
+				echo $alt
+				alttemp=$(cat TempData)
+				echo $alttemp
+				#cat Temp | sed s/"$alttemp"/"$alt"/ > Temp
+				sed -i "s|$alttemp|$alt|g" Temp
+				grep -vi $nome dbAgenda.txt > dbAgenda.temp
+				rm dbAgenda.txt
+				mv dbAgenda.temp dbAgenda.txt
+				cat Temp >> dbAgenda.txt
+				rm Temp*
+				opt=6
+				count=2
+			#cat dbAgenda.txt
+				;;
+
+			2)	echo ---Alterar Telefone fixo---
+				echo				
+				echo O dado a ser alterado é:
+				cut -d ',' -f 2 Temp | tee TempData			
+				echo Digite o novo número:
+				read alt
+				alt=" Telefone fixo: $alt"
+				alttemp=$(cat TempData)
+				echo $alttemp
+				#cat Temp | sed s/"$alttemp"/"$alt"/ > Temp
+				sed -i "s|$alttemp|$alt|g" Temp
+				grep -vi $nome dbAgenda.txt > dbAgenda.temp
+				rm dbAgenda.txt
+				mv dbAgenda.temp dbAgenda.txt
+				cat Temp >> dbAgenda.txt
+				rm Temp*
+				opt=6
+				count=2
+				;;
+
+			3)	echo ---Alterar Telefone celular---
+				echo				
+				echo O dado a ser alterado é:
+				cut -d ',' -f 3 Temp | tee TempData			
+				echo Digite o novo número:
+				read alt
+				alt=" Telefone celular: $alt"
+				alttemp=$(cat TempData)
+				echo $alttemp
+				#cat Temp | sed s/"$alttemp"/"$alt"/ > Temp
+				sed -i "s|$alttemp|$alt|g" Temp
+				grep -vi $nome dbAgenda.txt > dbAgenda.temp
+				rm dbAgenda.txt
+				mv dbAgenda.temp dbAgenda.txt
+				cat Temp >> dbAgenda.txt
+				rm Temp*
+				opt=6
+				count=2
+				;;
+
+			4)	echo ---Alterar E-mail---
+				echo				
+				echo O dado a ser alterado é:
+				cut -d ',' -f 4 Temp | tee TempData			
+				echo Digite o novo E-mail:
+				read alt
+				alt=" E-mail: $alt"
+				echo $alt
+				alttemp=$(cat TempData)
+				echo $alttemp
+				#cat Temp | sed s/"$alttemp"/"$alt"/ > Temp
+				sed -i "s|$alttemp|$alt|g" Temp
+				grep -vi $nome dbAgenda.txt > dbAgenda.temp
+				rm dbAgenda.txt
+				mv dbAgenda.temp dbAgenda.txt
+				cat Temp >> dbAgenda.txt
+				rm Temp*
+				opt=6
+				count=2
+				;;
+
+			5)	echo ---Alterar Data de Nascimento---
+				echo				
+				echo O dado a ser alterado é:
+				cut -d ',' -f 5 Temp | tee TempData			
+				echo Digite a nova data de nascimento:
+				read alt
+				alt=" Nascimento: $alt"
+				echo $alt
+				alttemp=$(cat TempData)
+				echo $alttemp
+				#cat Temp | sed s/"$alttemp"/"$alt"/ > Temp
+				sed -i "s|$alttemp|$alt|g" Temp
+				grep -vi $nome dbAgenda.txt > dbAgenda.temp
+				rm dbAgenda.txt
+				mv dbAgenda.temp dbAgenda.txt
+				cat Temp >> dbAgenda.txt
+				rm Temp*
+				opt=6
+				count=2
+				;;
+
+			6)	control=5
+				opt=6
+				;;
+		esac
+	done
+done
+c=1
+while [ $c == 1 ]; do
+clear
+echo ---Buscador de Eventos---
+echo Digite um mês na forma de MM
+read data
+egrep */$data/* dbAgenda.txt > Eventos.temp
+gnome-terminal -x bash -c "leafpad Eventos.temp; exec $SHELL"
+clear
+echo Deseja realizar outra busca?
+echo Digite 1 para sim ou qualquer outra para não
+read c
+rm -f Eventos.temp
+done
+clear
+echo ---Excluir contato---
+echo
+echo
+echo Digite o nome completo do contato:
+read nome
+clear
+echo Contatos encontrados com o nome: $nome
+grep -i $nome dbAgenda.txt
+echo Deseja excluir esse contato?
+echo Digite 1 para sim ou qualquer outro para não
+read opt
+if [ $opt == 1 ];then
+grep -vi $nome dbAgenda.txt > dbAgenda.new
+rm dbAgenda.txt
+mv dbAgenda.new dbAgenda.txt
+chmod 741 dbAgena.txt
+fi
+
+clear
+echo ---Incluir---
+echo Nome completo
+read nome
+echo Telefone fixo
+read phone
+echo Telefone celular
+read cellphone
+echo E-mail
+read email
+echo "Data de Nascimento (DD/MM/AAAA)"
+read datanasc
+
+echo Nome: $nome, Telefone fixo: $phone, Telefone celular: $cellphone, E-mail: $email, Nascimento: $datanasc >> dbAgenda.txt  
+clear
+echo Contato Salvo com Sucesso!!
+sleep 0.5
+clear
+echo ---Ordenar---
+echo
+opt=0
+while [ $opt -ne 3 ]; do
+echo Escolha uma opção abaixo:
+echo 1- A-Z
+echo 2- Z-A
+echo 3- Voltar ao menu anterior
+read opt
+case $opt in 
+	1)
+		sort -n -t: -k1 dbAgenda.txt > dbAgenda.temp
+		rm -f dbAgenda.txt
+		mv dbAgenda.temp dbAgenda.txt
+		opt=3
+		;;
+
+		
+	2)
+		sort -nr -t: -k1 dbAgenda.txt > dbAgenda.temp
+		rm -f dbAgenda.txt
+		mv dbAgenda.temp dbAgenda.txt
+		opt=3
+		;;
+	3)	
+		
+		exit 0;;
+esac
+done
+clear
+echo Operação realizada com sucesso
+sleep 0.5
+clear
+clear
+echo --- Quantidade de Contatos ---
+echo
+echo A agenda tem:
+qtc=$(cat dbAgenda.txt | wc -l)
+if [ $qtc -eq 0 ]; then
+echo $qtc Contatos
+fi 
+if [ $qtc -eq 1 ]; then
+echo $qtc Contato
+fi
+if [ $qtc -gt 1 ]; then
+echo $qtc Contatos
+fi
+echo Digite qualquer tecla para sair
+read exit
+
+clear
+echo ---Todos os Contatos---
+echo
+cat dbAgenda.txt > dbAgenda.temp
+chmod 444 dbAgenda.temp
+#cat dbAgenda.txt
+gnome-terminal -x bash -c "leafpad dbAgenda.temp; exec $SHELL"
+clear
+echo Digite qualquer tecla para voltar ao menu inicial
+read a
+rm -f dbAgenda.temp
+
+

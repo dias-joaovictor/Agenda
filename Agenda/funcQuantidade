@@ -1,0 +1,17 @@
+clear
+echo --- Quantidade de Contatos ---
+echo
+echo A agenda tem:
+qtc=$(cat dbAgenda.txt | wc -l)
+if [ $qtc -eq 0 ]; then
+echo $qtc Contatos
+fi 
+if [ $qtc -eq 1 ]; then
+echo $qtc Contato
+fi
+if [ $qtc -gt 1 ]; then
+echo $qtc Contatos
+fi
+echo Digite qualquer tecla para sair
+read exit
+
